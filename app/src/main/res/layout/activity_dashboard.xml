@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.theawesomegem.testapp.dashboard.DashboardActivity">
+
+
+    <fragment
+        android:id="@+id/fragDashboard"
+        android:name="me.theawesomegem.testapp.dashboard.DashboardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_dashboard" />
+</android.support.constraint.ConstraintLayout>
