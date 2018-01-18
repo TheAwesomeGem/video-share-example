@@ -16,6 +16,7 @@ public interface DashboardContract {
         String getSearchText();
         int getSelectedGenreID();
         void refreshVideos(List<VideoModel> videoList);
+        void openVideo(String name, String url);
     }
 
     interface Presenter extends BasePresenter {

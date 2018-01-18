@@ -1,6 +1,8 @@
 package me.theawesomegem.testapp.dashboard;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -20,6 +22,7 @@ import java.util.List;
 import me.theawesomegem.testapp.R;
 import me.theawesomegem.testapp.dashboard.adapter.VideoTileAdapter;
 import me.theawesomegem.testapp.data.model.VideoModel;
+import me.theawesomegem.testapp.video.VideoActivity;
 
 /**
  * Created by TheAwesomeGem on 1/15/2018.
@@ -71,9 +74,16 @@ public class DashboardFragment extends Fragment implements DashboardContract.Vie
         });
 
         gridVideos = root.findViewById(R.id.gridVideos);
-        gridVideos.setAdapter(new VideoTileAdapter(inflater, new ArrayList<>()));
+        gridVideos.setAdapter(new VideoTileAdapter(this, inflater, new ArrayList<>()));
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        this.presenterDashboard.start();
     }
 
     @Override
@@ -96,5 +106,17 @@ public class DashboardFragment extends Fragment implements DashboardContract.Vie
         VideoTileAdapter adapter = (VideoTileAdapter) gridVideos.getAdapter();
 
         adapter.setVideoList(videoList);
+    }
+
+    @Override
+    public void openVideo(String name, String url) {
+        Activity parentAcitivty = getActivity();
+
+        Intent videoOpenIntent = new Intent(parentAcitivty, VideoActivity.class);
+
+        videoOpenIntent.putExtra("videoName", name);
+        videoOpenIntent.putExtra("videoUrl", url);
+
+        parentAcitivty.startActivity(videoOpenIntent);
     }
 }

@@ -7,7 +7,7 @@ import me.theawesomegem.testapp.R;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private DashboardPresenter presenter;
+    private DashboardContract.Presenter dashboardPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,6 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         DashboardFragment dashboardFragment = (DashboardFragment) getFragmentManager().findFragmentById(R.id.fragDashboard);
-        presenter = new DashboardPresenter(dashboardFragment, this);
+        dashboardPresenter = new DashboardPresenter(dashboardFragment, this);
     }
 }
