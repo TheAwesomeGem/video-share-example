@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import me.theawesomegem.testapp.R;
+import me.theawesomegem.testapp.data.repo.VideoRepository;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -15,6 +16,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         DashboardFragment dashboardFragment = (DashboardFragment) getFragmentManager().findFragmentById(R.id.fragDashboard);
-        dashboardPresenter = new DashboardPresenter(dashboardFragment, this);
+        VideoRepository videoRepository = new VideoRepository(this);
+        dashboardPresenter = new DashboardPresenter(dashboardFragment, videoRepository);
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import me.theawesomegem.testapp.dashboard.DashboardPresenter;
 import me.theawesomegem.testapp.data.model.VideoModel;
-import me.theawesomegem.testapp.data.repo.VideoDao;
+import me.theawesomegem.testapp.data.repo.VideoRepository;
 
 /**
  * Created by TheAwesomeGem on 1/15/2018.
@@ -17,14 +17,14 @@ public class GetVideoTask extends AsyncTask<Void, Void, Void> {
     private final DashboardPresenter presenter;
     private final String name;
     private final String genre;
-    private final VideoDao videoDao;
+    private final VideoRepository videoRepository;
 
     public GetVideoTask(DashboardPresenter presenter, String name, String genre)
     {
         this.presenter = presenter;
         this.name = name;
         this.genre = genre;
-        this.videoDao = presenter.getDatabase().videoDao();
+        this.videoRepository = presenter.getVideoRepository();
     }
 
     @Override
@@ -33,9 +33,9 @@ public class GetVideoTask extends AsyncTask<Void, Void, Void> {
         List<VideoModel> videoList;
 
         if(this.name.isEmpty())
-            videoList = videoDao.loadAllByGenre(genre);
+            videoList = videoRepository.loadAllByGenre(genre);
         else
-            videoList = videoDao.loadAllByNamesAndGenre(name, genre);
+            videoList = videoRepository.loadAllByNamesAndGenre(name, genre);
 
         presenter.updateVideos(videoList);
 

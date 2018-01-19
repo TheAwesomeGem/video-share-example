@@ -1,12 +1,10 @@
 package me.theawesomegem.testapp.dashboard;
 
-import android.content.Context;
-
 import java.util.List;
 
 import me.theawesomegem.testapp.dashboard.task.GetVideoTask;
-import me.theawesomegem.testapp.data.database.AppDatabase;
 import me.theawesomegem.testapp.data.model.VideoModel;
+import me.theawesomegem.testapp.data.repo.VideoRepository;
 
 /**
  * Created by TheAwesomeGem on 1/15/2018.
@@ -15,12 +13,16 @@ import me.theawesomegem.testapp.data.model.VideoModel;
 public class DashboardPresenter implements DashboardContract.Presenter {
 
     private final DashboardContract.View viewDashboard;
-    private final AppDatabase database;
+    private final VideoRepository videoRepository;
 
-    public DashboardPresenter(DashboardContract.View view, Context context)
+    public VideoRepository getVideoRepository() {
+        return videoRepository;
+    }
+
+    public DashboardPresenter(DashboardContract.View view, VideoRepository videoRepository)
     {
         this.viewDashboard = view;
-        this.database = AppDatabase.getAppDatabase(context);
+        this.videoRepository = videoRepository;
 
         view.setPresenter(this);
     }
@@ -41,9 +43,5 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     public void updateVideos(List<VideoModel> videoList) {
 
         viewDashboard.refreshVideos(videoList);
-    }
-
-    public AppDatabase getDatabase() {
-        return database;
     }
 }
