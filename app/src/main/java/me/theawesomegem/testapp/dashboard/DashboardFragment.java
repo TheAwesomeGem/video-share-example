@@ -2,7 +2,9 @@ package me.theawesomegem.testapp.dashboard;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -17,10 +19,12 @@ import android.widget.GridView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.theawesomegem.testapp.R;
 import me.theawesomegem.testapp.dashboard.adapter.VideoTileAdapter;
+import me.theawesomegem.testapp.dashboard.loader.VideoLoader;
 import me.theawesomegem.testapp.data.model.VideoModel;
 import me.theawesomegem.testapp.video.VideoActivity;
 
@@ -29,6 +33,8 @@ import me.theawesomegem.testapp.video.VideoActivity;
  */
 
 public class DashboardFragment extends Fragment implements DashboardContract.View {
+
+    public final int VIDEO_LOADER_ID = 1;
 
     private DashboardContract.Presenter presenterDashboard;
 
@@ -110,13 +116,44 @@ public class DashboardFragment extends Fragment implements DashboardContract.Vie
 
     @Override
     public void openVideo(String name, String url) {
-        Activity parentAcitivty = getActivity();
+        Activity parentActivty = getActivity();
 
-        Intent videoOpenIntent = new Intent(parentAcitivty, VideoActivity.class);
+        Intent videoOpenIntent = new Intent(parentActivty, VideoActivity.class);
 
         videoOpenIntent.putExtra("videoName", name);
         videoOpenIntent.putExtra("videoUrl", url);
 
-        parentAcitivty.startActivity(videoOpenIntent);
+        parentActivty.startActivity(videoOpenIntent);
     }
+
+    @Override
+    public void startVideoLoader(String name, String genre) {
+        Bundle videoLoaderBundle = new Bundle(2);
+        videoLoaderBundle.putString("name", name);
+        videoLoaderBundle.putString("genre", genre);
+
+        getLoaderManager().restartLoader(VIDEO_LOADER_ID, videoLoaderBundle, videoLoaderListener);
+    }
+
+    private LoaderManager.LoaderCallbacks<List<VideoModel>> videoLoaderListener
+            = new LoaderManager.LoaderCallbacks<List<VideoModel>>() {
+
+        @Override
+        public Loader<List<VideoModel>> onCreateLoader(int i, Bundle bundle) {
+            String name = bundle.getString("name");
+            String genre = bundle.getString("genre");
+
+            return new VideoLoader(getActivity(), (DashboardPresenter) presenterDashboard, name, genre);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<VideoModel>> loader, List<VideoModel> videoList) {
+            presenterDashboard.updateVideos(videoList);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<VideoModel>> loader) {
+            presenterDashboard.updateVideos(Collections.emptyList());
+        }
+    };
 }

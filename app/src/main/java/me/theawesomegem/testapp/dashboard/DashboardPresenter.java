@@ -2,7 +2,6 @@ package me.theawesomegem.testapp.dashboard;
 
 import java.util.List;
 
-import me.theawesomegem.testapp.dashboard.task.GetVideoTask;
 import me.theawesomegem.testapp.data.model.VideoModel;
 import me.theawesomegem.testapp.data.repo.VideoRepository;
 
@@ -36,7 +35,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     public void populateVideos(String name, int genreID) {
         VideoModel.VideoGenre genre = VideoModel.VideoGenre.values()[genreID];
 
-        new GetVideoTask(this, name, genre.name()).execute();
+        viewDashboard.startVideoLoader(name, genre.name());
+        //new GetVideoTask(this, name, genre.name()).execute();
     }
 
     @Override

@@ -17,6 +17,7 @@ public interface DashboardContract {
         int getSelectedGenreID();
         void refreshVideos(List<VideoModel> videoList);
         void openVideo(String name, String url);
+        void startVideoLoader(String name, String genre);
     }
 
     interface Presenter extends BasePresenter {
